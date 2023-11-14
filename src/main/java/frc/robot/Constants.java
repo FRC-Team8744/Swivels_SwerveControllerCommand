@@ -23,35 +23,39 @@ public final class Constants {
   public static final class SwerveConstants {
     public static final double kMaxSpeedMetersPerSecond = 3;
 
+    // The drive classes use the NWU axes convention (North-West-Up as external reference in the world frame).
+    // The positive X axis points ahead, the positive Y axis points left, and the positive Z axis points up.
+    // We use NWU here because the rest of the library, and math in general, use NWU axes convention.
+    // https://docs.wpilib.org/en/stable/docs/software/hardware-apis/motors/wpi-drive-classes.html#axis-conventions
     public static final int kFrontLeftDriveMotorPort = 5;
-    public static final int kRearLeftDriveMotorPort = 1;
-    public static final int kFrontRightDriveMotorPort = 8;
+    public static final int kFrontRightDriveMotorPort = 1;
+    public static final int kRearLeftDriveMotorPort = 8;
     public static final int kRearRightDriveMotorPort = 4;
 
     public static final int kFrontLeftTurningMotorPort = 6;
-    public static final int kRearLeftTurningMotorPort = 2;
-    public static final int kFrontRightTurningMotorPort = 7;
+    public static final int kFrontRightTurningMotorPort = 2;
+    public static final int kRearLeftTurningMotorPort = 7;
     public static final int kRearRightTurningMotorPort = 3;
 
     public static final boolean kFrontLeftTurningEncoderReversed = false;
-    public static final boolean kRearLeftTurningEncoderReversed = true;
     public static final boolean kFrontRightTurningEncoderReversed = false;
+    public static final boolean kRearLeftTurningEncoderReversed = true;
     public static final boolean kRearRightTurningEncoderReversed = true;
 
     public static final boolean kFrontLeftDriveEncoderReversed = false;
-    public static final boolean kRearLeftDriveEncoderReversed = true;
     public static final boolean kFrontRightDriveEncoderReversed = false;
+    public static final boolean kRearLeftDriveEncoderReversed = true;
     public static final boolean kRearRightDriveEncoderReversed = true;
 
     public static final int kFrontLeftMagEncoderPort = 12;
-    public static final int kRearLeftMagEncoderPort = 9;
-    public static final int kFrontRightMagEncoderPort = 11;
+    public static final int kFrontRightMagEncoderPort = 9;
+    public static final int kRearLeftMagEncoderPort = 11;
     public static final int kRearRightMagEncoderPort = 10;
 
-    public static final double kFrontLeftMagEncoderOffsetDegrees = 261.39;
-    public static final double kRearLeftMagEncoderOffsetDegrees = 314.03;
-    public static final double kFrontRightMagEncoderOffsetDegrees = 190.28;
-    public static final double kRearRightMagEncoderOffsetDegrees = 245.92;
+    public static final double kFrontLeftMagEncoderOffsetDegrees = 81.12;
+    public static final double kFrontRightMagEncoderOffsetDegrees = 133.77;
+    public static final double kRearLeftMagEncoderOffsetDegrees = 11.25;
+    public static final double kRearRightMagEncoderOffsetDegrees = 66.71;
 
     // Distance between centers of right and left wheels on robot
     public static final double kTrackWidth = Units.inchesToMeters(20.472);
@@ -61,10 +65,11 @@ public final class Constants {
 
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+          // This is the order all swerve module references need to be in!
+            new Translation2d(kWheelBase / 2, kTrackWidth / 2),  // Front Left Quadrant
+            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),  // Front Right Quadrant
+            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),  // Rear Left Quadrant
+            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));  // Rear Right Quadrant
 
     public static final int kIMU_ID = 13;
     public static final boolean kGyroReversed = false;

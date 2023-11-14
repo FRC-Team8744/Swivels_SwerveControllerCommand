@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -13,6 +14,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -62,8 +65,15 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
           });
 
+  // Create Field2d for robot and trajectory visualizations.
+  private Field2d m_field;
+  
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem() {}
+  public DriveSubsystem() {
+    // Create and push Field2d to SmartDashboard.
+    m_field = new Field2d();
+    SmartDashboard.putData(m_field);
+  }
 
   @Override
   public void periodic() {
@@ -76,6 +86,25 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
         });
+    
+    // Update robot position on Field2d.
+    m_field.setRobotPose(getPose());
+
+    // Diagnostics
+    SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
+    SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
+    SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
+    SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
+
+    SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
+    SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
+    SmartDashboard.putNumber("RL Drive Enc", m_rearLeft.getPosition().distanceMeters);
+    SmartDashboard.putNumber("RR Drive Enc", m_rearRight.getPosition().distanceMeters);
+    
+    SmartDashboard.putNumber("FL Turn Enc", m_frontLeft.getPosition().angle.getDegrees());
+    SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
+    SmartDashboard.putNumber("RL Turn Enc", m_rearLeft.getPosition().angle.getDegrees());
+    SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
   }
 
   /**
@@ -113,6 +142,15 @@ public class DriveSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    SmartDashboard.putNumber("xSpeed", xSpeed);
+    SmartDashboard.putNumber("ySpeed", ySpeed);
+    SmartDashboard.putNumber("rot", rot);
+
+    // Apply joystick deadband
+    xSpeed = MathUtil.applyDeadband(xSpeed, 0.1, 1.0);
+    ySpeed = MathUtil.applyDeadband(ySpeed, 0.1, 1.0);
+    rot = MathUtil.applyDeadband(rot, 0.1, 1.0);
+
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
