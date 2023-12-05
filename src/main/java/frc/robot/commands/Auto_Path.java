@@ -80,7 +80,7 @@ public class Auto_Path extends CommandBase {
   @Override
   public void execute() {
     // Calculate controller states
-    // thetaController
+    // thetaController.calculate()
 
     // Apply controller states to wheels
 
