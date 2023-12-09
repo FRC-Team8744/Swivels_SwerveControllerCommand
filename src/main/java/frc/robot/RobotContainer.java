@@ -9,7 +9,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -80,9 +79,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {}
 
-  // public Command getAutonomousCommand(){
-  //   return new PathPlannerAuto("Test2");
-  // }
+  public Command getAutonomousCommand(){
+    return new PathPlannerAuto("Test2");
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -182,6 +181,6 @@ public class RobotContainer {
   return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
 }
 
-public Command getAutonomousCommand() {return m_chooser.getSelected();}  //return SwerveCommand();}
+// public Command getAutonomousCommand() {return m_chooser.getSelected();}  //return SwerveCommand();}
 
 }

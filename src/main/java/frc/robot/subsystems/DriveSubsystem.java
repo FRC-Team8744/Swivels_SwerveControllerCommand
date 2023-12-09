@@ -201,6 +201,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void driveRobotRelative(ChassisSpeeds speeds){
     this.drive(speeds.vxMetersPerSecond,speeds.vyMetersPerSecond,speeds.omegaRadiansPerSecond,false);
+    SmartDashboard.putNumber("DriveVelX", speeds.vxMetersPerSecond);
+    SmartDashboard.putNumber("DriveVelY", speeds.vyMetersPerSecond);
+    SmartDashboard.putNumber("DriveRotZ", speeds.omegaRadiansPerSecond);
   }
   
   public ChassisSpeeds getRobotRelativeSpeeds(){
