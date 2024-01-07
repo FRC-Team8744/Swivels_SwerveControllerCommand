@@ -80,7 +80,7 @@ public class RobotContainer {
   private void configureButtonBindings() {}
 
   public Command getAutonomousCommand(){
-    return new PathPlannerAuto("Test2");
+    return new PathPlannerAuto("AutoTest");
   }
 
   /**
